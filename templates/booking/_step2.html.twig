@@ -1,0 +1,18 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+
+<h3>Step 2</h3>
+
+
+{{ form_row(form.country) }}
+{{ form_row(form.department) }}
+{{ form_row(form.street) }}
+{{ form_row(form.zipCode) }}
+<div class="d-flex justify-content-between">
+    {{ form_row(form.prev) }}
+    {{ form_row(form.next) }}
+</div>
+
+
+
+{{ form_end(form) }}

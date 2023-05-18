@@ -1,0 +1,19 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+
+<h3>Step 3</h3>
+
+
+<div class="card mb-3">
+    <div class="card-body">
+        {{ form_row(form.terms) }}
+    </div>
+</div>
+
+
+<div class="d-flex justify-content-between">
+    {{ form_row(form.prev) }}
+    {{ form_row(form.next) }}
+</div>
+
+{{ form_end(form) }}

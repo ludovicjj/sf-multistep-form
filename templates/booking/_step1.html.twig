@@ -1,0 +1,15 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+
+<h3>Step 1</h3>
+
+
+{{ form_row(form.firstName) }}
+{{ form_row(form.lastName) }}
+{{ form_row(form.email) }}
+{{ form_row(form.phone) }}
+
+<div class="text-end">
+    <button class="btn btn-success" type="submit">Continuer</button>
+</div>
+{{ form_end(form) }}

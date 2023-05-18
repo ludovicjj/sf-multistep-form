@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+
+    <div class="container mt-4">
+        <h1>Réservation</h1>
+        <a class="btn btn-success mb-4" href="{{ path('app_home') }}">Accueil</a>
+
+        <ul class="step-listing">
+            <li class="{% for value in ['step1', 'step2', 'step3'] %}{% if value in workflow_marked_places(bookingContainer)%}step-active{% endif %}{% endfor %}">
+                <div>
+                    <i class="step-dot-container">
+                        <span class="step-dot"></span>
+                    </i>
+                    <span class="d-block text-center">Step 1</span>
+                </div>
+            </li>
+            <li class="{% for value in ['step2', 'step3'] %}{% if value in workflow_marked_places(bookingContainer)%}step-active{% endif %}{% endfor %}">
+                <div>
+                    <i class="step-dot-container">
+                        <span class="step-dot"></span>
+                    </i>
+                    <span class="d-block text-center">Step 2</span>
+                </div>
+            </li>
+            <li class="{% if workflow_has_marked_place(bookingContainer, 'step3') %}step-active{% endif %}">
+                <div>
+                    <i class="step-dot-container">
+                        <span class="step-dot"></span>
+                    </i>
+                    <span class="d-block text-center">Step 3</span>
+                </div>
+            </li>
+            <li class="{% if workflow_has_marked_place(bookingContainer, 'confirmed') %}step-active{% endif %}">
+                <div>
+                    <i class="step-dot-container">
+                        <span class="step-dot"></span>
+                    </i>
+                    <span class="d-block text-center">Récapitulatif</span>
+                </div>
+            </li>
+        </ul>
+
+        {% if workflow_has_marked_place(bookingContainer, 'step1') %}
+            {{ include('booking/_step1.html.twig') }}
+        {% endif %}
+
+        {% if workflow_has_marked_place(bookingContainer, 'step2') %}
+            {{ include('booking/_step2.html.twig') }}
+        {% endif %}
+        {% if workflow_has_marked_place(bookingContainer, 'step3') %}
+            {{ include('booking/_step3.html.twig') }}
+        {% endif %}
+
+        {% if workflow_has_marked_place(bookingContainer, 'confirmed') %}
+            <div class="card">
+                <div class="card-body">
+                    <h4>Reservation terminée</h4>
+                    <p>Récapitulatif de vos informations :</p>
+                    <ul class="list-unstyled">
+                        <li>Nom : {{ booking.lastName }}</li>
+                        <li>Prénom : {{ booking.firstName }}</li>
+                        <li>Téléphone : {{ booking.phone }}</li>
+                        <li>Email : {{ booking.email }}</li>
+                    </ul>
+                        <hr>
+                    <ul class="list-unstyled">
+                        <li>Pays : {{ booking.country }}</li>
+                        <li>Département : {{ booking.department }}</li>
+                        <li>Rue : {{ booking.street }}</li>
+                        <li>Code Postal : {{ booking.zipCode }}</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ path('app_booking_add') }}" class="btn btn-success">Ajouter une réservation</a>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+
+{% endblock %}
