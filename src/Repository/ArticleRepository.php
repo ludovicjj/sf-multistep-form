@@ -46,4 +46,12 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllDeleted(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.deletedAt IS NOT null')
+            ->getQuery()
+            ->getResult();
+    }
 }
