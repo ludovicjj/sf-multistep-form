@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="https://kit.fontawesome.com/442f2338c2.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="{{ asset('assets/js/ArticlesList.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Articles</h1>
+
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Slug</th>
+                    <th scope="col">Date</th>
+                </tr>
+                </thead>
+                <tbody id="js-articles-drag">
+                {% for article in articles %}
+                    <tr data-id="{{ article.id }}" data-url="{{ path('app_article_reorder') }}">
+                        <th scope="row" class="drag-handle"><i class="fa-solid fa-arrows-up-down-left-right"></i></th>
+                        <td>{{ loop.index0 }}</td>
+                        <td>{{ article.title }}</td>
+                        <td>{{ article.slug }}</td>
+                        <td>{{ article.createdAt|date("d/m/Y") }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

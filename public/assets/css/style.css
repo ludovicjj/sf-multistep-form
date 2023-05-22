@@ -1,4 +1,10 @@
-
+/* Sortable */
+.drag-handle {
+    cursor: grab;
+}
+.sortable-ghost {
+    background-color: lightblue;
+}
 
 
 .o-h {
