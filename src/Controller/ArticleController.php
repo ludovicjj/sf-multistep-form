@@ -13,12 +13,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     #[Route('/article', name:'app_article')]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(
+        ArticleRepository $articleRepository,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         $articles = $articleRepository->findAllOrderByPosition();
 
+        $entityManager->getFilters()->disable('softdeleteable');
+        $deletedArticles = $articleRepository->findAllDeleted();
+
         return $this->render('article/index.html.twig', [
-            'articles' => $articles
+            'articles' => $articles,
+            'deletedArticles' => $deletedArticles
         ]);
     }
 
@@ -43,5 +50,30 @@ class ArticleController extends AbstractController
 
         $entityManager->flush();
         return $this->json(['mesage' => 'success'], 200);
+    }
+
+    #[Route('/article/delete/{id}', name:'app_article_delete', methods: ['GET'])]
+    public function delete(
+        Article $article,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $entityManager->remove($article);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_article');
+    }
+
+    #[Route('/article/undelete/{id}', name:'app_article_undelete', methods: ['GET'])]
+    public function undelete(
+        int $id,
+        ArticleRepository $articleRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $entityManager->getFilters()->disable('softdeleteable');
+        $article = $articleRepository->find($id);
+        $article->setDeletedAt(null);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_article');
     }
 }

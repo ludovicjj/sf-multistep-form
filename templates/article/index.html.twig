@@ -11,7 +11,8 @@
     <div class="container">
         <h1>Articles</h1>
 
-        <div>
+        <div class="my-5">
+            <p class="h5">Les articles actif</p>
             <table class="table">
                 <thead>
                 <tr>
@@ -20,6 +21,7 @@
                     <th scope="col">Titre</th>
                     <th scope="col">Slug</th>
                     <th scope="col">Date</th>
+                    <th scope="col">Delete</th>
                 </tr>
                 </thead>
                 <tbody id="js-articles-drag">
@@ -30,6 +32,39 @@
                         <td>{{ article.title }}</td>
                         <td>{{ article.slug }}</td>
                         <td>{{ article.createdAt|date("d/m/Y") }}</td>
+                        <td>
+                            <a href="{{ path('app_article_delete', {'id': article.id}) }}" class="btn btn-danger">Soft Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-5">
+            <p class="h5">Les articles supprimés</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Slug</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for deletedArticle in deletedArticles %}
+                    <tr>
+                        <th scope="row" class="drag-handle"><i class="fa-solid fa-arrows-up-down-left-right"></i></th>
+                        <td>{{ loop.index0 }}</td>
+                        <td>{{ deletedArticle.title }}</td>
+                        <td>{{ deletedArticle.slug }}</td>
+                        <td>{{ deletedArticle.createdAt|date("d/m/Y") }}</td>
+                        <td>
+                            <a href="{{ path('app_article_undelete', {'id': deletedArticle.id}) }}" class="btn btn-success">Revert</a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

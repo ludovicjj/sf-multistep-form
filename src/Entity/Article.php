@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use DateTime;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation\Slug;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Article
 {
     use TimestampableEntity;
@@ -29,6 +32,9 @@ class Article
 
     #[ORM\Column(type: 'integer')]
     private int $position;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $deletedAt = null;
 
     public function __construct()
     {
@@ -86,5 +92,15 @@ class Article
         $this->position = $position;
 
         return $this;
+    }
+
+    public function getDeletedAt(): ?DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }
